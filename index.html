@@ -31,74 +31,28 @@
     </head>
     <body>
         <canvas id="scope"></canvas>
+        <script src="./scripts/helpers.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
+        var SCALE = 100;
+
+
+        var planes = [];
+
         var scope = new fabric.Canvas('scope');
+
         scope.setHeight(window.innerHeight);
         scope.setWidth(window.innerWidth);
         scope.renderAll()
 
-        fabric.Object.prototype.setOriginToCenter = function () {
-            this._originalOriginX = this.originX;
-            this._originalOriginY = this.originY;
-
-            var center = this.getCenterPoint();
-
-            this.set({
-                originX: 'center',
-                originY: 'center',
-                left: center.x,
-                top: center.y
-            });
-        };
-
-        fabric.Object.prototype.setCenterToOrigin = function () {
-            var originPoint = this.translateToOriginPoint(
-            this.getCenterPoint(),
-            this._originalOriginX,
-            this._originalOriginY);
-
-            this.set({
-                originX: this._originalOriginX,
-                originY: this._originalOriginY,
-                left: originPoint.x,
-                top: originPoint.y
-            });
-        };
-
-        function rotateObject(obj, angleOffset) {
-            var resetOrigin = false;
-
-            if (!obj) return;
-
-            var angle = obj.getAngle() + angleOffset;
-
-            if ((obj.originX !== 'center' || obj.originY !== 'center') && obj.centeredRotation) {
-                obj.setOriginToCenter && obj.setOriginToCenter();
-                resetOrigin = true;
-            }
-
-            angle = angle > 360 ? 90 : angle < 0 ? 270 : angle;
-
-            obj.setAngle(angle).setCoords();
-
-            if (resetOrigin) {
-                obj.setCenterToOrigin && obj.setCenterToOrigin();
-            }
-
-            scope.renderAll();
-        }
-
-
     function createAircraft(startLoc, heading) {
+        heading = typeof heading !== 'undefined' ? heading : 45;
+
         var BLIP_SIZE = 6,
             BLIP_OFFSET = BLIP_SIZE * 2,
             BLIP_CENTER = BLIP_SIZE / 2
 
         var x = startLoc[0],
             y = startLoc[1]
-
-        var cos = Math.cos(heading),
-            sin = Math.sin(heading)
 
         var blip = new fabric.Rect({
             top: y,
@@ -122,15 +76,74 @@
 
 
         aircraft = new fabric.Group([blip, tail]);
-        rotateObject(aircraft, 270);
-        return aircraft
-
+        rotateObject(aircraft, heading);
+        aircraft.heading = heading;
+        aircraft.speed = 200;
+        planes.push(aircraft);
+        return aircraft;
     }
 
-    airplane = createAircraft([20, 20]);
-    scope.add(airplane);
+    function move_airplane(airplane, index, planes) {
+        magnatude = airplane.speed / SCALE
+        radian = (airplane.heading * Math.PI) / 180;
+
+        x_trans = (magnatude) * Math.cos(radian).toFixed(5);
+        y_trans = (magnatude) * Math.sin(radian).toFixed(5);
+
+        if (x_trans < 0) {
+            x_sign = '-=';
+            x_trans = x_trans * -1
+        } else {
+            x_sign = '+=';
+        }
+
+        if (y_trans < 0) {
+            y_sign = '-=';
+            y_trans = y_trans * -1
+        } else {
+            y_sign = '+=';
+        }
+
+        if (airplane.heading > 0 && airplane.heading <= 90) {
+            temp = x_trans;
+            x_trans = y_trans;
+            y_trans = temp;
+        } else if (airplane.heading > 90 && airplane.heading <= 180) {
+            temp = x_trans;
+            x_trans = y_trans;
+            y_trans = temp;
+        } else if (airplane.heading > 180 && airplane.heading <= 270) {
+            temp = x_trans;
+            x_trans = y_trans;
+            y_trans = temp;
+            x_sign = '-=';
+        } else if (airplane.heading > 180 && airplane.heading <= 360) {
+            temp = x_trans;
+            x_trans = y_trans;
+            y_trans = temp;
+            y_sign = '-=';
+        }
+
+        x_final = x_sign + x_trans;
+        y_final = y_sign + y_trans;
+
+        airplane.animate('left', x_final);
+        airplane.animate('top', y_final);
+    }
+
+    airplane1 = createAircraft([100, 100], 90);
+    airplane2 = createAircraft([200, 200], 180);
+    airplane3 = createAircraft([300, 300], 270);
+    airplane4 = createAircraft([400, 400], 360);
+    airplane5 = createAircraft([500, 500], 45);
+    scope.add(airplane1);
+    scope.add(airplane2);
+    scope.add(airplane3);
+    scope.add(airplane4);
+    scope.add(airplane5);
+
     function move() {
-        airplane.animate('left', '+=10');
+        planes.forEach(move_airplane)
         scope.renderAll();
     }
 
