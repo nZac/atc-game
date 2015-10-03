@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width">
         <title>ATC</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" type="text/css" media="screen" title="normalize" charset="utf-8">
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://cdn.rawgit.com/konvajs/konva/0.9.5/konva.min.js" type="text/javascript" charset="utf-8"></script>
+        <script data-main="js/main" src="node_modules/requirejs/require.js"></script>
         <style>
             body, html {
                 width: 100%;
@@ -30,125 +31,6 @@
 
     </head>
     <body>
-        <canvas id="scope"></canvas>
-        <script src="./scripts/helpers.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript">
-        var SCALE = 100;
-
-
-        var planes = [];
-
-        var scope = new fabric.Canvas('scope');
-
-        scope.setHeight(window.innerHeight);
-        scope.setWidth(window.innerWidth);
-        scope.renderAll()
-
-    function createAircraft(startLoc, heading) {
-        heading = typeof heading !== 'undefined' ? heading : 45;
-
-        var BLIP_SIZE = 6,
-            BLIP_OFFSET = BLIP_SIZE * 2,
-            BLIP_CENTER = BLIP_SIZE / 2
-
-        var x = startLoc[0],
-            y = startLoc[1]
-
-        var blip = new fabric.Rect({
-            top: y,
-            left: x,
-            width: BLIP_SIZE,
-            height: BLIP_SIZE,
-            strokeWidth: 1,
-            stroke: 'white'
-        });
-
-        var tail = new fabric.Line(
-        [
-            x - BLIP_OFFSET,  // start x
-            y + BLIP_CENTER,  // start y
-            x + BLIP_OFFSET + BLIP_SIZE,  // end x
-            y + BLIP_CENTER], // end y
-        {
-            strokeWidth: 1,
-            stroke: 'white'
-        });
-
-
-        aircraft = new fabric.Group([blip, tail]);
-        rotateObject(aircraft, heading);
-        aircraft.heading = heading;
-        aircraft.speed = 200;
-        planes.push(aircraft);
-        return aircraft;
-    }
-
-    function move_airplane(airplane, index, planes) {
-        magnatude = airplane.speed / SCALE
-        radian = (airplane.heading * Math.PI) / 180;
-
-        x_trans = (magnatude) * Math.cos(radian).toFixed(5);
-        y_trans = (magnatude) * Math.sin(radian).toFixed(5);
-
-        if (x_trans < 0) {
-            x_sign = '-=';
-            x_trans = x_trans * -1
-        } else {
-            x_sign = '+=';
-        }
-
-        if (y_trans < 0) {
-            y_sign = '-=';
-            y_trans = y_trans * -1
-        } else {
-            y_sign = '+=';
-        }
-
-        if (airplane.heading > 0 && airplane.heading <= 90) {
-            temp = x_trans;
-            x_trans = y_trans;
-            y_trans = temp;
-        } else if (airplane.heading > 90 && airplane.heading <= 180) {
-            temp = x_trans;
-            x_trans = y_trans;
-            y_trans = temp;
-        } else if (airplane.heading > 180 && airplane.heading <= 270) {
-            temp = x_trans;
-            x_trans = y_trans;
-            y_trans = temp;
-            x_sign = '-=';
-        } else if (airplane.heading > 180 && airplane.heading <= 360) {
-            temp = x_trans;
-            x_trans = y_trans;
-            y_trans = temp;
-            y_sign = '-=';
-        }
-
-        x_final = x_sign + x_trans;
-        y_final = y_sign + y_trans;
-
-        airplane.animate('left', x_final);
-        airplane.animate('top', y_final);
-    }
-
-    airplane1 = createAircraft([100, 100], 90);
-    airplane2 = createAircraft([200, 200], 180);
-    airplane3 = createAircraft([300, 300], 270);
-    airplane4 = createAircraft([400, 400], 360);
-    airplane5 = createAircraft([500, 500], 45);
-    scope.add(airplane1);
-    scope.add(airplane2);
-    scope.add(airplane3);
-    scope.add(airplane4);
-    scope.add(airplane5);
-
-    function move() {
-        planes.forEach(move_airplane)
-        scope.renderAll();
-    }
-
-    setInterval(move, 1000);
-
-    </script>
+        <div id="scope"></div>
     </body>
 </html>
