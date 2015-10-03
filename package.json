@@ -1,5 +1,34 @@
 {
-    "scripts": {
-        "test": "jest"
-    }
+  "scripts": {
+    "test": "mocha"
+  },
+  "name": "atc-simulator",
+  "version": "0.0.0",
+  "description": "A simulator of Air Traffic.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "konva": "^0.9.5",
+    "underscore": "^1.8.3",
+    "requirejs": "^2.1.20",
+    "moment": "^2.10.6"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nZac/atc-game.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Nick Zaccardi",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nZac/atc-game/issues"
+  },
+  "homepage": "https://github.com/nZac/atc-game#readme"
 }

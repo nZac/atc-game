@@ -1,13 +1,8 @@
-define([
-    'scope',
-    'simulate'
-], function(scope, simulate){
-    var initialize = function() {
-        display = scope.initialize();
-        simulate.run();
-    }
+var scope = require('./scope.js'),
+    simulate = require('./simulate.js');
 
-    return {
-        initialize: initialize
-    };
-});
+
+module.exports = function() {
+    display = scope.initialize();
+    simulate.run();
+}
