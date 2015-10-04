@@ -1,7 +1,8 @@
 var konva = require('konva'),
     _ = require('underscore'),
     scope = require('./scope'),
-    heading = require('./heading');
+    heading = require('./heading'),
+    map = require('./map');
 
 var _blipSize = 6,
     _wingsOffset = 6 * 2;
@@ -21,9 +22,14 @@ function _createArrival() {
 
     var scopeCtx = scope.getScope();
     var arrivalFix = _.sample(scopeCtx.map.arrivalFixes);
-    var x = arrivalFix.x,
-        y = arrivalFix.y,
-        heading = arrivalFix.initialHeading,
+    var cords = map.getArrivalCords(
+            scopeCtx.display.height(),
+            scopeCtx.display.width(),
+            arrivalFix.course
+    );
+    var x = cords.x,
+        y = cords.y
+        heading = arrivalFix.heading,
         type = _.sample(_aircraftTypes);
 
     if (type.maxSpeed < 240) {

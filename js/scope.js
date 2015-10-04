@@ -1,40 +1,39 @@
-var konva = require('konva');
+var konva = require('konva'),
+    _ = require('underscore'),
+    map = require('./map.js');
 
-var _scope = {};
 
-function initialize() {
-    display = new konva.Stage({
-        width: window.innerWidth,
-        height: window.innerHeight,
-        container: 'scope'
-    });
+var scope = {};
 
-    aircraft = new konva.Layer();
+function initialize(mapName) {
+    var aircraft = new konva.Layer(),
+        mapLayer = new konva.Layer(),
+        display = new konva.Stage({
+            width: 1000,
+            height: 1000,
+            container: 'scope'
+        });
 
-    map = {
-        arrivalFixes: [
-            {
-                x: 750,
-                y: 500,
-                initialHeading: 135
-            }
-        ]
-    }
+    mapData = require('./maps/msp.js')();
 
-    display.add(aircraft);
+    map.renderMap(display.height(), display.width(), mapData, mapLayer);
 
-    _scope = {
+    scope = {
         display: display,
-        map: map,
+        map: mapData,
         layers: {
-            aircraft: aircraft
+            aircraft: aircraft,
+            map: mapLayer
         }
     }
-    return _scope;
+
+    _.map(scope.layers, function(v, k){ scope.display.add(v); });
+
+    return scope;
 }
 
 function getScope() {
-    return _scope;
+    return scope;
 };
 
 module.exports = {

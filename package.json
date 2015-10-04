@@ -5,9 +5,10 @@
   "name": "atc-simulator",
   "version": "0.0.0",
   "description": "A simulator of Air Traffic.",
-  "main": "index.js",
+  "main": "js/app.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "js": "js"
   },
   "dependencies": {
     "konva": "^0.9.5",

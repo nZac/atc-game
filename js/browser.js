@@ -1,2 +1,2 @@
-var app = require('./app.js');
-app();
+var app = require('./app.js')
+app()

@@ -3,6 +3,6 @@ var scope = require('./scope.js'),
 
 
 module.exports = function() {
-    display = scope.initialize();
+    display = scope.initialize('msp');
     simulate.run();
 }

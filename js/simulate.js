@@ -3,15 +3,14 @@ var scope = require('./scope.js'),
     konva = require('konva'),
     moment = require('moment');
 
-
-var flights = [];
-
 var opts = {
     maxAircraft: 20,
-    newAircraftRate: moment.duration(2, 'minutes')
+    newAircraftRate: moment.duration(30, 'seconds')
 }
 
-var sim = {};
+var sim = {
+    flights: []
+};
 
 function addNewAircraft() {
     console.log('Add new');
@@ -21,12 +20,12 @@ function addNewAircraft() {
     scopeCtx.layers.aircraft.add(newPlane.sprite);
     scopeCtx.layers.aircraft.draw();
 
-    flights.push(newPlane);
+    sim.flights.push(newPlane);
     sim.lastAddedAircraft = moment();
 }
 
 function syncSim() {
-    sim.currentAircraft = flights.length;
+    sim.currentAircraft = sim.flights.length;
 }
 
 function adjustSim() {
@@ -43,8 +42,6 @@ function process() {
 }
 
 function run(){
-    console.log("Running");
-
     var scopeCtx = scope.getScope();
     addNewAircraft();
 
@@ -57,7 +54,7 @@ function run(){
             animationCounter = 0;
         }
 
-        flights.forEach(aircraft.fly, frame);
+        sim.flights.forEach(aircraft.fly, frame);
     }, scopeCtx.layers.aircraft);
 
     anim.start();
