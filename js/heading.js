@@ -1,53 +1,21 @@
-
-var Heading = {
-    course: 0,
-    _add: function(degrees){
-        temp = degrees + course;
-
-        if (temp > 360) {
-            return temp - 360;
-        } else {
-            return temp
-        }
-    },
-    _subtract: function(degrees){
-        temp = degrees - course;
-
-        if (temp < 0) {
-            return temp + 360;
-        } else {
-            return temp
-        }
-    },
-    turn: function (degrees) {
-        if (degrees == 0) {
-            return course;
-        } else if (degrees > 0) {
-            return course = add(degrees);
-        } else if (degrees < 0) {
-            return course = subtract(degrees);
-        }
-    },
-    inverse: function() {
-        var inverse = course - 180;
-
-        if (inverse < 0) {
-           return inverse + 360;
-        } else {
-            return inverse;
-        }
-    }
-}
-
-
-
+/**
+ * Convert a degree to radians
+ *
+ * @param {int} deg the amount of degrees.
+ * @return {int} the radians
+ */
 function toRad(deg) {
-    return deg * Math.PI / 180
-
+    return deg * Math.PI / 180;
 }
 
-function toDeg(raf) {
-
+/**
+ * Convert radians to degrees
+ *
+ * @param {int} rad the amount of radians.
+ * @return {int} calculated degrees
+ */
+function toDeg(rad) {
+    return rad * (180  / Math.PI);
 }
 
 
@@ -61,6 +29,7 @@ function toDeg(raf) {
 function calcTurnDirection(actual, assigned) {
    return (actual - assigned + 360) % 360 > 180 ? 'right': 'left';
 }
+
 
 /**
  * Calculate turn rate an aircraft will never turn more than the standard three degrees / second
@@ -78,6 +47,7 @@ function calcTurnRate(actual, assigned) {
         return 3  // Standard turn rate
     }
 }
+
 
 /**
  * Based on a current heading an assigned heading, and a direction with a standard
@@ -117,6 +87,7 @@ function calcNewHeading(actual, assigned, direction) {
         }
     }
 }
+
 
 /**
  * Given a heading, return he opposite

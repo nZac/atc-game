@@ -3,6 +3,17 @@ var chai = require('chai'),
     assert = chai.assert;
 
 
+describe('Heading Object', function(){
+
+    it('has a course', function(){
+        obj = new heading.Heading();
+        assert.
+    });
+
+
+});
+
+
 
 describe('calcTurnDirection', function(){
     it('returns right for +20', function() {
